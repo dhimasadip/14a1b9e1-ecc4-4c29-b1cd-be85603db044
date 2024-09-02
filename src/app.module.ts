@@ -8,6 +8,8 @@ import sequelizeConfig from './configs/sequelize.config';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from './shared/intereceptors/transform.interceptor';
 import { GlobalExceptionFilter } from './shared/filters/global-exception.filter';
+import { JoiPipeModule } from 'nestjs-joi';
+import { joiPipeConfig } from './configs/joi-pipe.config';
 
 @Module({
   imports: [
@@ -21,6 +23,7 @@ import { GlobalExceptionFilter } from './shared/filters/global-exception.filter'
       autoLoadModels: true,
       synchronize: true,
     }),
+    JoiPipeModule.forRoot(joiPipeConfig),
   ],
   controllers: [AppController],
   providers: [
