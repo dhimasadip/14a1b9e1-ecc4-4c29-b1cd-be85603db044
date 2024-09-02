@@ -1,5 +1,4 @@
 import { HttpException } from '@nestjs/common';
-import * as changeCase from 'change-case';
 import { FilterResponseBodyFormat } from '../interfaces/filter-response-body-format';
 
 /**
@@ -14,8 +13,7 @@ export const handleNestError = (
 ): FilterResponseBodyFormat => {
   const status = exception.getStatus();
   const message = exception.getResponse()['message'];
-  const code =
-    exception.getResponse()['code'] || changeCase.pascalCase(message);
+  const code = exception.getResponse()['code'];
 
   return {
     status,

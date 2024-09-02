@@ -10,6 +10,7 @@ import { TransformInterceptor } from './shared/intereceptors/transform.intercept
 import { GlobalExceptionFilter } from './shared/filters/global-exception.filter';
 import { JoiPipeModule } from 'nestjs-joi';
 import { joiPipeConfig } from './configs/joi-pipe.config';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { joiPipeConfig } from './configs/joi-pipe.config';
       synchronize: true,
     }),
     JoiPipeModule.forRoot(joiPipeConfig),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [
