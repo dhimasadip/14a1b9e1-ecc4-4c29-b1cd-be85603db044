@@ -2,13 +2,6 @@ import { upperFirst } from 'lodash';
 import { ValidationError } from 'sequelize/types';
 import { FilterResponseBodyFormat } from '../interfaces/filter-response-body-format';
 
-/**
- * Function that will process an error response
- * when a validation error thrown by Sequelize {@link ValidationError}
- *
- * params:
- * - `exception`: {@link ValidationError}
- */
 export const handleSequelizeValidationError = (
   exception: ValidationError,
 ): FilterResponseBodyFormat => {

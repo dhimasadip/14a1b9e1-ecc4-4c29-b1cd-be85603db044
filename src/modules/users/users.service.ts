@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
 import { User, UserCreationAttributes } from './users.model';
 import { Optional } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
+import { GetAllUsersQueryDto } from './dtos/get-all-users.dto';
 
 @Injectable()
 export class UsersService {
@@ -15,9 +16,29 @@ export class UsersService {
     return this.usersRepository.create(body);
   }
 
-  // getAllAndCount(options: FindAndCountOptions<UserAttributes>) {
-  //   return this.usersRepository.getAllAndCount(options);
-  // }
+  async getAllAndCount(query: GetAllUsersQueryDto) {
+    const { limit, page, sortBy, order } = query;
+
+    const userAttributes = Object.keys(User.getAttributes());
+    if (!userAttributes.some((val) => val === sortBy)) {
+      throw new BadRequestException({
+        code: 'InvalidInput',
+        message: `User doesn't have attribute: ${sortBy}`,
+      });
+    }
+
+    const data = await this.usersRepository.getAllAndCount({
+      limit,
+      offset: limit * page - limit,
+      order: [[sortBy, order]],
+    });
+
+    return {
+      users: data.rows,
+      totalData: data.count,
+      totalPages: Math.ceil(data.count / limit),
+    };
+  }
 
   update(
     body: Optional<

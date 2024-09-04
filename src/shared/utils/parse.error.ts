@@ -1,9 +1,3 @@
-/**
- * a function to obtain positions of an error details
- *
- * params:
- * - `stackObject`: string[]
- */
 const getErrorPosition = (
   stackObject: string[],
 ): {
@@ -18,11 +12,10 @@ const getErrorPosition = (
       return /\(.+?\)$/.test(s);
     });
     let splitLine: string[];
-    // For current Node & Chromium Error stacks
+
     if (filteredStack.length > 0) {
       splitLine =
         filteredStack[0].match(/(?:\()(.+?)(?:\))$/)?.[1].split(':') || [];
-      // For older, future, or otherwise unexpected stacks
     } else {
       splitLine = stackObject[0].split(':');
     }
@@ -43,12 +36,6 @@ const getErrorPosition = (
   } as const;
 };
 
-/**
- * a function to parse an error object
- *
- * params:
- * - `err`: {@link Error}
- */
 export const parseError = (
   err: Error,
 ): {

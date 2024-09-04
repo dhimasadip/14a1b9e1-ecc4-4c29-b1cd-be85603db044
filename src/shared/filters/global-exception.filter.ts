@@ -7,23 +7,14 @@ import {
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 import { JoiPipeValidationException } from 'nestjs-joi';
-import {
-  DatabaseError,
-  ForeignKeyConstraintError,
-  ValidationError,
-} from 'sequelize';
+import { DatabaseError, ValidationError } from 'sequelize';
 import { FilterResponseBodyFormat } from './interfaces/filter-response-body-format';
 import { handleJoiPipeError } from './utils/handle-joi-pipe-error';
 import { handleNestError } from './utils/handle-nest-error';
 import { handleSequelizeDatabaseError } from './utils/handle-sequelize-database-error';
-import { handleSequelizeForeignKeyConstraintError } from './utils/handle-sequelize-foreign-key-constraint-error';
 import { handleSequelizeValidationError } from './utils/handle-sequelize-validation-error';
 import { parseError } from '../utils/parse.error';
 
-/**
- * Class of exception filter that will process
- * all errors thrown by the server
- */
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
   constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
@@ -42,8 +33,6 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
     if (exception instanceof ValidationError) {
       responseBody = handleSequelizeValidationError(exception);
-    } else if (exception instanceof ForeignKeyConstraintError) {
-      responseBody = handleSequelizeForeignKeyConstraintError(exception);
     } else if (exception instanceof DatabaseError) {
       responseBody = await handleSequelizeDatabaseError(exception);
     } else if (exception instanceof HttpException) {

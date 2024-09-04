@@ -12,10 +12,6 @@ export interface Response<T> {
   data: T;
 }
 
-/**
- * Class of interceptor that will format
- * all success responses using template
- */
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
