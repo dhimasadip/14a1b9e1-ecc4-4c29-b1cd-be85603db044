@@ -1,22 +1,29 @@
+import { ApiProperty } from '@nestjs/swagger';
 import Joi from 'joi';
-import { getTypeSchema, JoiSchema } from 'nestjs-joi';
+import { JoiSchema } from 'nestjs-joi';
 
-class UpdateUserSchema {
+export class UpdateUsersBodyDto {
+  @ApiProperty({ example: 1, required: true })
   @JoiSchema(Joi.number().min(1).required())
   id: number;
 
+  @ApiProperty({ example: 'John', required: false })
   @JoiSchema(Joi.string().optional())
   firstName?: string;
 
+  @ApiProperty({ example: 'Doe', required: false })
   @JoiSchema(Joi.string().allow('', null).optional())
-  lastName?: string | null;
+  lastName?: string;
 
+  @ApiProperty({ example: 'CEO', required: false })
   @JoiSchema(Joi.string().optional())
   position?: string;
 
+  @ApiProperty({ example: 'johndoe@mail.com', required: false })
   @JoiSchema(Joi.string().email().optional())
   email?: string;
 
+  @ApiProperty({ example: '081234567890', required: false })
   @JoiSchema(
     Joi.string()
       .regex(RegExp('^[0-9]*$'))
@@ -28,9 +35,4 @@ class UpdateUserSchema {
       .optional(),
   )
   phone?: string;
-}
-
-export class UpdateUsersBodyDto {
-  @JoiSchema(Joi.array().items(getTypeSchema(UpdateUserSchema)))
-  users: UpdateUserSchema[];
 }
